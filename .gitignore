@@ -73,3 +73,6 @@ crashlytics-build.properties
 
 #VSCode
 /.vscode/
+
+#Text Mesh Pro
+/Assets/TextMesh Pro/

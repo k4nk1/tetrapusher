@@ -1,14 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LotteryMachine : MonoBehaviour
 {
     [SerializeField]
     private float delay;
+
     [SerializeField]
-    private GameObject diceTetrapodPF;
+    private TetrapodManager tm;
+    [SerializeField]
+    private TMP_Text lotteriesText;
+    [SerializeField]
+    private TMP_Text lotteriesTextS;
 
     private GameObject[] dice;
     private Rigidbody[] diceRb;
@@ -20,7 +26,7 @@ public class LotteryMachine : MonoBehaviour
         dice = new GameObject[3];
         diceRb = new Rigidbody[3];
         for (int i = 0; i < 3; i++){
-            dice[i] = Instantiate(diceTetrapodPF, new Vector3(3.5f, 2.4f, 1 + i), Quaternion.identity);
+            dice[i] = Instantiate(tm.tetrapodPrefabs.die, new Vector3(3.5f, 2.4f, 1 + i), Quaternion.identity);
             diceRb[i] = dice[i].GetComponent<Rigidbody>();
         }
     }
@@ -35,8 +41,19 @@ public class LotteryMachine : MonoBehaviour
                 foreach(GameObject die in dice){
                     if((die.transform.rotation * Vector3.up - Vector3.up).sqrMagnitude < 0.5f) wins++;
                 }
-                Debug.Log(wins);
-                if(lotteries-- > 1) StartLottery();
+                switch(wins){
+                    case 0: break;
+                    case 1: 
+                        tm.GiveTetrapod(amount: 5); break;
+                    case 2:
+                        tm.GiveTetrapod(prefab: tm.tetrapodPrefabs.big);
+                        break;
+                }
+                if(lotteries-- > 1){
+                    StartLottery();
+                    lotteriesText.text = (lotteries-1).ToString();
+                    lotteriesTextS.text = (lotteries-1).ToString();
+                }
             }
         }
     }
@@ -55,6 +72,8 @@ public class LotteryMachine : MonoBehaviour
     public void QueueLottery(int n){
         if(lotteries == 0) StartLottery();
         lotteries += n;
+        lotteriesText.text = (lotteries-1).ToString();
+        lotteriesTextS.text = (lotteries-1).ToString();
     }
 
     private bool AreDiceMoving(){

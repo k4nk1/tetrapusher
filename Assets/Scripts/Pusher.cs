@@ -8,6 +8,7 @@ public class Pusher : MonoBehaviour
     private float frequency;
     [SerializeField]
     private float amplitude;
+    
     private Rigidbody rb;
     void Start()
     {
