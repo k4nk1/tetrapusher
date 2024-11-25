@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -8,7 +9,7 @@ using UnityEngine.Pool;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private Launcher launcher;
+    private Shooter shooter;
     [SerializeField]
     private TMP_Text creditText;
     [SerializeField]
@@ -23,7 +24,7 @@ public class GameManager : MonoBehaviour
             UpdateCreditText();
         }
     }
-    private bool doubling;
+    public float doubleShotRemaining;
     void Start()
     {
         Application.targetFrameRate = 30;
@@ -31,9 +32,10 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if(doubleShotRemaining > 0) doubleShotRemaining -= Time.deltaTime; 
         if(Input.GetMouseButtonDown(0)){
             if(credit > 0){
-                launcher.Launch();
+                shooter.Shoot(doubleShotRemaining > 0);
                 Credit -= 2;
             }
         }

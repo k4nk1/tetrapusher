@@ -10,6 +10,7 @@ using UnityEngine.Pool;
 public class TetrapodPrefabs{
     public GameObject normal;
     public GameObject big;
+    public GameObject gold;
     public GameObject die;
 }
 
