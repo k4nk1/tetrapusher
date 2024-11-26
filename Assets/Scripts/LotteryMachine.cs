@@ -10,7 +10,11 @@ public class LotteryMachine : MonoBehaviour
     private float delay;
 
     [SerializeField]
+    private Roulette r;
+    [SerializeField]
     private TetrapodManager tm;
+    [SerializeField]
+    private DataManager dm;
     [SerializeField]
     private TMP_Text lotteriesText;
     [SerializeField]
@@ -20,6 +24,7 @@ public class LotteryMachine : MonoBehaviour
     private Rigidbody[] diceRb;
     private int lotteries;
     private float timer;
+    private bool pausing;
 
     void Start()
     {
@@ -33,8 +38,7 @@ public class LotteryMachine : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A)) QueueLottery(1);
-        if(lotteries > 0 && !AreDiceMoving()){
+        if(timer > 0 && !AreDiceMoving()){
             timer -= Time.deltaTime;
             if(timer < 0){
                 int wins = 0;
@@ -48,17 +52,22 @@ public class LotteryMachine : MonoBehaviour
                     case 2:
                         tm.GiveTetrapod(prefab: tm.tetrapodPrefabs.big);
                         break;
+                    case 3:
+                        r.Spin();
+                        pausing = true;
+                        break;
                 }
-                if(lotteries-- > 1){
+                dm.data.statistics.lottery[wins]++;
+                if(--lotteries > 0 && !pausing){
                     StartLottery();
-                    lotteriesText.text = (lotteries-1).ToString();
-                    lotteriesTextS.text = (lotteries-1).ToString();
+                    SetLotteriesText(lotteries-1);
                 }
             }
         }
     }
 
     void StartLottery(){
+        timer = delay;
         System.Random random = new System.Random();
         for (int i = 0; i < 3; i++){
             dice[i].SetActive(true);
@@ -66,14 +75,16 @@ public class LotteryMachine : MonoBehaviour
             diceRb[i].velocity = new Vector3((float)random.NextDouble()*2-1, (float)random.NextDouble()*2-1, (float)random.NextDouble()*2-1);
             diceRb[i].angularVelocity = new Vector3((float)random.NextDouble()*4-2, (float)random.NextDouble()*4-2, (float)random.NextDouble()*4-2);
         }
-        timer = delay;
     }
 
     public void QueueLottery(int n){
-        if(lotteries == 0) StartLottery();
         lotteries += n;
-        lotteriesText.text = (lotteries-1).ToString();
-        lotteriesTextS.text = (lotteries-1).ToString();
+        if(pausing){
+            SetLotteriesText(lotteries);
+        }else{
+            if(lotteries - n == 0) StartLottery();
+            SetLotteriesText(lotteries-1);
+        }
     }
 
     private bool AreDiceMoving(){
@@ -81,5 +92,18 @@ public class LotteryMachine : MonoBehaviour
             if(dieRb.velocity.sqrMagnitude > 0.1f) return true;
         }
         return false;
+    }
+
+    private void SetLotteriesText(int n){
+        lotteriesText.text = n.ToString();
+        lotteriesTextS.text = n.ToString();
+    }
+
+    public void ResumeLottery(){
+        pausing = false;
+        if(lotteries > 0){
+            StartLottery();
+            SetLotteriesText(lotteries-1);
+        }
     }
 }

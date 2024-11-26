@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class DropDetector : MonoBehaviour
     private GameManager gm;
     [SerializeField]
     private TetrapodManager tm;
+    [SerializeField]
+    private Jackpot jp;
 
 
     void OnCollisionEnter(Collision col){
@@ -20,6 +23,11 @@ public class DropDetector : MonoBehaviour
         }else if(tag == tm.tetrapodPrefabs.big.tag){
             gm.Credit += 20;
             Destroy(col.gameObject);
+        }else if(tag == tm.tetrapodPrefabs.gold.tag){
+            gm.Credit += 50;
+            Destroy(col.gameObject);
+        }else if(tag == tm.tetrapodPrefabs.jackpot.tag){
+            jp.hasFallen = true;
         }
     }
 }

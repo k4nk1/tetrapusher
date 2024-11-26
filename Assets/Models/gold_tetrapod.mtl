@@ -1,0 +1,12 @@
+# Blender 4.3.0 MTL File: 'tetrapod_base.blend'
+# www.blender.org
+
+newmtl Gold
+Ns 236.443283
+Ka 0.903780 0.903780 0.903780
+Kd 0.777375 0.800331 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3

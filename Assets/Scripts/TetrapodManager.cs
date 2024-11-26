@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
 
 [Serializable]
@@ -12,6 +11,7 @@ public class TetrapodPrefabs{
     public GameObject big;
     public GameObject gold;
     public GameObject die;
+    public GameObject jackpot;
 }
 
 public class TetrapodManager : MonoBehaviour
