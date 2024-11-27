@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Jackpot : MonoBehaviour
@@ -13,6 +14,10 @@ public class Jackpot : MonoBehaviour
     private GameManager gm;
     [SerializeField]
     private DataManager dm;
+    [SerializeField]
+    private TMP_Text jackpotLengthText;
+    [SerializeField]
+    private TMP_Text jackpotLengthTextS;
 
     private int phase; //0:Not in JP, 1:Camera goes to JP, 2:Playing, 3:Camera goes back to normal
     private float time;
@@ -44,6 +49,7 @@ public class Jackpot : MonoBehaviour
                     }
                     Fall();
                     tm.GiveTetrapod(tm.tetrapodPrefabs.gold);
+                    SetLengthText(tetrapods.Count);
                     time = 0;
                 }
                 break;
@@ -57,6 +63,7 @@ public class Jackpot : MonoBehaviour
                     foreach(GameObject tetrapod in tetrapods){
                         Destroy(tetrapod);
                     }
+                    SetLengthText(tetrapods.Count);
                     gm.pausingShot = false;
                 }
                 break;
@@ -74,5 +81,10 @@ public class Jackpot : MonoBehaviour
         System.Random random = new System.Random();
         Vector3 pos = new Vector3((float)(random.NextDouble() * 2 - 1), 6, (float)(random.NextDouble() * 2 - 7));
         tetrapods.Add(Instantiate(tm.tetrapodPrefabs.jackpot, pos, Quaternion.identity));
+    }
+    
+    private void SetLengthText(int length){
+        jackpotLengthText.text = length.ToString();
+        jackpotLengthTextS.text = length.ToString();
     }
 }
