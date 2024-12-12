@@ -68,24 +68,22 @@ public class DataManager : MonoBehaviour
         statistics.transform.localScale = Vector3.one / 1920 * Screen.width;
     }
 
-    void Update(){
-        if(Input.GetKeyDown(KeyCode.S)){
-            if(statistics.activeSelf){
-                statistics.SetActive(false);
-            }else{
-                statistics.SetActive(true);
-                int sum = 0, i = 0;
-                for(i=0; i<256; i++){
-                    if(data.statistics.jackpotResults[i] == 0) break;
-                    sum += data.statistics.jackpotResults[i];
-                }
-                int playtime = (int)(data.statistics.playtime + Time.time);
-                String playtimeS = $"{playtime / 3600:D2}:{playtime % 3600 / 60:D2}:{playtime % 60:D2}";
-                statisticsText.text = $"Statistics\n\nShots : {data.statistics.shots}\nPlay Time : {playtimeS}\n" + 
-                $"Lottery :\n    Total : {data.statistics.lottery.Sum()}\n    0 Hits : {data.statistics.lottery[0]}  1 Hits : {data.statistics.lottery[1]}  2 Hits : {data.statistics.lottery[2]}  3 Hits : {data.statistics.lottery[3]}\n" +
-                $"Roulette : \n    Total : {data.statistics.roulette.Sum()}\n    Jackpot : {data.statistics.roulette[0]}  Gold Tetrapod : {data.statistics.roulette[1]}  20 Lotteries : {data.statistics.roulette[2]}  Double Shot : {data.statistics.roulette[3]}\n" +
-                $"Jackpot : \n    Total : {data.statistics.jackpots}  Max Win : {data.statistics.jackpotMax}   Average Win : {(i==0 ? 0 : (float)sum / i)}";
+    public void ToggleStatictics(){
+        if(statistics.activeSelf){
+            statistics.SetActive(false);
+        }else{
+            statistics.SetActive(true);
+            int sum = 0, i = 0;
+            for(i=0; i<256; i++){
+                if(data.statistics.jackpotResults[i] == 0) break;
+                sum += data.statistics.jackpotResults[i];
             }
+            int playtime = (int)(data.statistics.playtime + Time.time);
+            String playtimeS = $"{playtime / 3600:D2}:{playtime % 3600 / 60:D2}:{playtime % 60:D2}";
+            statisticsText.text = $"Statistics\n\nShots : {data.statistics.shots}\nPlay Time : {playtimeS}\n" + 
+            $"Lottery :\n    Total : {data.statistics.lottery.Sum()}\n    0 Hits : {data.statistics.lottery[0]}  1 Hits : {data.statistics.lottery[1]}  2 Hits : {data.statistics.lottery[2]}  3 Hits : {data.statistics.lottery[3]}\n" +
+            $"Roulette : \n    Total : {data.statistics.roulette.Sum()}\n    Jackpot : {data.statistics.roulette[0]}  Gold Tetrapod : {data.statistics.roulette[1]}  20 Lotteries : {data.statistics.roulette[2]}  Double Shot : {data.statistics.roulette[3]}\n" +
+            $"Jackpot : \n    Total : {data.statistics.jackpots}  Max Win : {data.statistics.jackpotMax}   Average Win : {(i==0 ? 0 : (float)sum / i)}";
         }
     }
 

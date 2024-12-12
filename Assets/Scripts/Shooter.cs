@@ -18,7 +18,8 @@ public class Shooter : MonoBehaviour
 
     public void Shoot(bool doubleShot = false)
     {
-        float angle = (Mathf.Clamp(Input.mousePosition.x, width/3, width/3*2) - width/2) * 60 / width; // / 320 * 20
+        float x = Input.touchCount > 0 ? Input.GetTouch(0).position.x : Input.mousePosition.x;
+        float angle = (Mathf.Clamp(x, width/5*2, width/5*3) - width/2) * 80 / width; // / 320 * 20
         GameObject tetrapod = tm.tetrapodPool.Get();
         tetrapod.transform.position = transform.position;
         tetrapod.GetComponent<Rigidbody>().velocity = Quaternion.Euler(new Vector3(-launchAngle, angle, 0)) * Vector3.forward * launchSpeed;

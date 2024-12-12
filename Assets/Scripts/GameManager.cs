@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     }
     public float doubleShotRemaining;
     public bool pausingShot;
+    public float defaultShootCoolTime;
+    private float shootCoolTime;
 
     void Start()
     {
@@ -37,15 +39,15 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        shootCoolTime -= Time.deltaTime;
         if(doubleShotRemaining > 0) doubleShotRemaining -= Time.deltaTime;
-        if(Input.GetMouseButtonDown(0)){
-            if(credit > 1 && !pausingShot){
-                shooter.Shoot(doubleShotRemaining > 0);
-                Credit -= 2;
-                dm.data.statistics.shots++;
-            }
+        if((Input.GetMouseButton(0) || Input.touchCount > 0) && shootCoolTime < 0 && credit > 1 && !pausingShot){
+            shooter.Shoot(doubleShotRemaining > 0);
+            Credit -= 2;
+            dm.data.statistics.shots++;
+            shootCoolTime = defaultShootCoolTime;
         }
-        if(Input.GetKeyDown(KeyCode.H) && Credit < 2) Credit += 100;
+        if((Input.GetKeyDown(KeyCode.H) || Input.touchCount > 0 && Input.GetTouch(0).position.y <= 50) && Credit < 2) Credit += 100;
     }
 
     private void UpdateCreditText(){
