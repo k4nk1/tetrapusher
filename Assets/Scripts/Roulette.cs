@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum RoulettePrizes{
@@ -75,7 +72,7 @@ public class Roulette : MonoBehaviour
     }
 
     public void Spin(){
-        time = (float)new System.Random().NextDouble() + 5;
+        time = Random.Range(4f, 6f);
     }
 
     private void SetArea(int area, int to=0){

@@ -16,12 +16,16 @@ public class GameManager : MonoBehaviour
     private TMP_Text creditText;
     [SerializeField]
     private TMP_Text creditTextS;
+    [SerializeField]
+    private GameObject helpButton;
 
     [SerializeField]
     private int credit;
     public int Credit{
         get { return credit; }
-        set { 
+        set {
+            if(credit > 1 && value < 2) helpButton.SetActive(true);
+            else if(credit < 2 && value > 1) helpButton.SetActive(false);
             credit = value;
             dm.data.credits = value;
             UpdateCreditText();
@@ -47,11 +51,14 @@ public class GameManager : MonoBehaviour
             dm.data.statistics.shots++;
             shootCoolTime = defaultShootCoolTime;
         }
-        if((Input.GetKeyDown(KeyCode.H) || Input.touchCount > 0 && Input.GetTouch(0).position.y <= 50) && Credit < 2) Credit += 100;
     }
 
     private void UpdateCreditText(){
         creditText.text = Credit.ToString();
         creditTextS.text = creditText.text;
+    }
+
+    public void Help(){
+        Credit = 100;
     }
 }
